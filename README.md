@@ -1,1 +1,1 @@
-# CaliburnMicro Demo
+# Caliburn.Micro Demo
