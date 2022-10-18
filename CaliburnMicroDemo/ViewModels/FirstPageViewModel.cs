@@ -2,25 +2,37 @@
 
 namespace CaliburnMicroDemo.ViewModels;
 
-public class FirstPageViewModel : PropertyChangedBase
+public class FirstPageViewModel : Screen
 {
-    private string _message = "Yolo";
+    private string _text = "First Page";
 
-    public string Message
+    public string Text
     {
-        get => _message;
+        get => _text;
         set
         {
-            _message = value;
-            NotifyOfPropertyChange(() => Message);
+            _text = value;
+            NotifyOfPropertyChange(() => Text);
         }
     }
 
     private int _pressCount = 0;
 
+    private readonly IEventAggregator _eventAggregator;
+
+    public FirstPageViewModel(IEventAggregator eventAggregator)
+    {
+        _eventAggregator = eventAggregator;
+    }
+
     public void ChangeMessage()
     {
         _pressCount++;
-        Message = $"Presses = {_pressCount}";
+        Text = $"Presses = {_pressCount}";
+    }
+
+    public void ShowSecondPage()
+    {
+        _ = _eventAggregator.PublishOnUIThreadAsync(2);
     }
 }

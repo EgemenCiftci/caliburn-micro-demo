@@ -1,16 +1,43 @@
 ﻿using Caliburn.Micro;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace CaliburnMicroDemo.ViewModels;
 
-public class ShellViewModel : Conductor<object>
+public class ShellViewModel : Conductor<IScreen>, IHandle<int>
 {
-    public ShellViewModel()
+    private readonly IEventAggregator _eventAggregator;
+
+    public ShellViewModel(IEventAggregator eventAggregator)
     {
-        ShowFirstPage();
+        _eventAggregator = eventAggregator;
+        _eventAggregator.SubscribeOnUIThread(this);
+
+        _ = Task.Run(async () =>
+        {
+            await ShowFirstPageAsync();
+        });
     }
 
-    public void ShowFirstPage()
+    public async Task HandleAsync(int message, CancellationToken cancellationToken)
     {
-        _ = ActivateItemAsync(new FirstPageViewModel());
+        if (message == 1)
+        {
+            await ShowFirstPageAsync();
+        }
+        else if (message == 2)
+        {
+            await ShowSecondPageAsync();
+        }
+    }
+
+    public Task ShowFirstPageAsync()
+    {
+        return ActivateItemAsync(IoC.Get<FirstPageViewModel>());
+    }
+
+    public Task ShowSecondPageAsync()
+    {
+        return ActivateItemAsync(new SecondPageViewModel(_eventAggregator));
     }
 }

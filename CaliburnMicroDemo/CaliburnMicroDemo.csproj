@@ -11,4 +11,11 @@
     <PackageReference Include="Caliburn.Micro" Version="4.0.212" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Page Update="Views\SecondPage.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+
 </Project>
